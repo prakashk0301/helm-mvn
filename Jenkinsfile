@@ -20,7 +20,24 @@ stages
    sh 'docker push pkw0301/feb-maven-web:latest'
   }}}
 
+stage('Deploy to dev k8s') {
+            steps {
+                script {
+                    namespace = 'development'
 
+                    echo "Deploying application ${ID} to ${namespace} namespace"
+                    createNamespace (namespace)
+
+                    // Remove release if exists
+                    helmDelete (namespace, "${ID}")
+
+                    // Deploy with helm
+                    echo "Deploying"
+                    helmInstall(namespace, "${ID}")
+                }
+            }
+        }
+  
  
 
 }
