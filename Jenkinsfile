@@ -14,7 +14,7 @@ stage('Deploy to dev k8s') {
                 script {
                    sh 'aws sts get-caller-identity'
                    sh 'aws eks --region ap-southeast-1 update-kubeconfig --name demo-cluster'
-                   sh "sed -i 's/client.authentication.k8s.io\/v1alpha1/client.authentication.k8s.io\/v1beta1/g' /var/lib/jenkins/.kube/config"
+                   sh 'sed -i "s/client.authentication.k8s.io\\/v1alpha1/client.authentication.k8s.io\\/v1beta1/g" ~/.kube/config'
                    sh 'kubectl apply -f pod.yaml'
                 }
                 }
