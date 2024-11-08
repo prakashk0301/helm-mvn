@@ -8,10 +8,14 @@ stages
 
 
 stage('Deploy to dev k8s') {
-            steps {
+            steps { withAWS(credentials: 'awscicd', region: 'ap-southeast-1') {
+    // some block
+
                 script {
-                   sh 'cd mvn-web'
-                   sh 'helm install mvn-web .'
+                   sh 'aws sts get-caller-identity''
+                   sh 'aws eks --region ap-southeast-1 update-kubeconfig --name demo-cluster'
+                   sh 'kubectl apply -f pod.yaml'
+                }
                 }
             }
         }
